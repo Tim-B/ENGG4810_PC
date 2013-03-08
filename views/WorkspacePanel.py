@@ -8,9 +8,11 @@ class WorkspacePanel:
     container = None
     workspace = None
     sampleList = None
+    trackList = None
 
     #This function is called when the class is made
-    def __init__(self, panel):
+    def __init__(self, panel, trackList):
+        self.trackList = trackList
         self.parent = panel
         self.workspace = SampleWorkspace.getInstance()
 
@@ -36,3 +38,5 @@ class WorkspacePanel:
         self.sampleList.delete(0, END)
         for item in items:
             self.sampleList.insert(END, item.getName())
+        for track in self.trackList:
+            track.updateList()

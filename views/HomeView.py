@@ -41,7 +41,7 @@ class HomeView:
         self.timeLinePanel = Frame()
         self.timeLinePanel.grid(row=3, column=1, columnspan=2);
 
-        workspacePanel = WorkspacePanel(self.workspacePanel)
+        workspacePanel = WorkspacePanel(self.workspacePanel, self.buttonTrackList)
 
         self.createMenu()
 

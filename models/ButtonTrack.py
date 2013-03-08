@@ -11,13 +11,14 @@ class ButtonTrack:
 
     def setPlayer(self, player):
         self.player = player
+        print self.player
 
     def start(self):
-        if self.player == None:
+        if self.player is None:
             return
         self.player.out()
 
     def stop(self):
-        if self.player == None:
+        if self.player is None:
             return
         self.player.stop()

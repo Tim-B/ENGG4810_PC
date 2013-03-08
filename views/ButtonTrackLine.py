@@ -1,4 +1,7 @@
 from Tkinter import *
+from ttk import *
+
+from models.SampleWorkspace import *
 
 class ButtonTrackLine:
 
@@ -6,6 +9,8 @@ class ButtonTrackLine:
     parent = None
     container = None
     trackVar = None
+    trackList = None
+    options = ("one", "two", "three")
 
     #This function is called when the class is made
     def __init__(self, panel, buttonTrack):
@@ -18,8 +23,9 @@ class ButtonTrackLine:
         self.trackVar = StringVar(self.container)
         self.trackVar.set("None")
         self.trackVar.trace("w", self.updateTrack)
-        option = OptionMenu(self.container, self.trackVar, "None")
+        option = Combobox(self.container, textvariable=self.trackVar, state='readonly')
         option.pack(side = LEFT)
+        self.trackList = option
 
         play = Button(self.container, text="Play")
         play.bind("<Button-1>", self.startTrack)
@@ -35,4 +41,9 @@ class ButtonTrackLine:
         self.buttonTrack.stop()
 
     def updateTrack(self, *args):
-        print self.trackVar.get()
+        index = self.trackList.current()
+        sample = SampleWorkspace.getInstance().getSampleIndex(index)
+        self.buttonTrack.setPlayer(sample.getPlayer())
+
+    def updateList(self):
+        self.trackList['values'] = tuple(SampleWorkspace.getInstance().getSampleList())

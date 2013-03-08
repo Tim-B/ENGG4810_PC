@@ -21,3 +21,6 @@ class SampleWorkspace:
 
     def getSampleList(self):
         return self.samples
+
+    def getSampleIndex(self, index):
+        return self.samples[index]
