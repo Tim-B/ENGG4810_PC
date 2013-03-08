@@ -1,8 +1,18 @@
 from controllers.HomeController import *
+from pyo import *
 
-#This function is suppose to be the starting point of the program
+pyoInstance = None;
+
+def getPyo():
+    return pyoInstance;
+
+
 def main():
-    #Call our initial controller (ie. the first page of the program)
+    pyoInstance = Server().boot()
+    pyoInstance.start()
+
+    #snd = "C:\Users\Tim\Downloads\SamplesWav - All in one\SamplesWav - All in one\Bass & Synth\Bass1.wav"
+    #sf = SfPlayer(snd, speed=[.75,.8], loop=True, mul=.3).out()
     HomeController.homeAction()
 
 #Invoke the main function    
