@@ -4,12 +4,6 @@ import tkFileDialog
 
 class WorkspacePanel:
 
-    parent = None
-    container = None
-    workspace = None
-    sampleList = None
-    trackList = None
-
     #This function is called when the class is made
     def __init__(self, panel, trackList):
         self.trackList = trackList

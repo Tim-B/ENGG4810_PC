@@ -1,18 +1,20 @@
+from models.PyoContainer import *
 from controllers.HomeController import *
-from pyo import *
-
-pyoInstance = None;
-
-def getPyo():
-    return pyoInstance;
-
+from pyaudio import *
 
 def main():
-    pyoInstance = Server().boot()
-    pyoInstance.start()
-
-    #snd = "C:\Users\Tim\Downloads\SamplesWav - All in one\SamplesWav - All in one\Bass & Synth\Bass1.wav"
-    #sf = SfPlayer(snd, speed=[.75,.8], loop=True, mul=.3).out()
+    PyoContainer.start()
+    p = PyAudio()
+    CHUNK = 1024
+    FORMAT = paInt16
+    CHANNELS = 2
+    RATE = 44100
+    stream = p.open(format=FORMAT,
+                    channels=CHANNELS,
+                    rate=RATE,
+                    input=True,
+                    frames_per_buffer=CHUNK)
+    print stream.read(1024)
     HomeController.homeAction()
 
 #Invoke the main function    

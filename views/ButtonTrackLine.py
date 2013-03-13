@@ -5,13 +5,6 @@ from models.SampleWorkspace import *
 
 class ButtonTrackLine:
 
-    buttonTrack = None
-    parent = None
-    container = None
-    trackVar = None
-    trackList = None
-    options = ("one", "two", "three")
-
     #This function is called when the class is made
     def __init__(self, panel, buttonTrack):
         print buttonTrack.getName()

@@ -1,8 +1,5 @@
 class ButtonTrack:
 
-    name = None
-    player = None
-
     def __init__(self, name):
         self.name = "Button " + str(name)
 

@@ -3,10 +3,6 @@ import ntpath
 
 class SampleTrack:
 
-    path = None
-    player = None
-    name = None
-
     def __init__(self, path):
         self.path = path
         self.name = ntpath.basename(path)

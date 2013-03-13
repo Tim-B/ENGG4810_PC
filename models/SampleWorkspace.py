@@ -1,6 +1,7 @@
 from models.SampleTrack import *
 
 class SampleWorkspace:
+
     samples = []
 
     INSTANCE = None

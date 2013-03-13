@@ -1,5 +1,6 @@
 from views.HomeView import *
 from models.ButtonTrack import *
+from controllers.LoopController import *
 
 #This class handles all the main controllers of the program
 class HomeController:
@@ -12,4 +13,7 @@ class HomeController:
         for i in range(0, 12):
             track = ButtonTrack(i)
             view.addButtonTrack(track)
+
+        LoopController.setupLoops(view)
+
         root.mainloop()
