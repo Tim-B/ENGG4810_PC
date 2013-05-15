@@ -1,19 +1,21 @@
 from views.HomeView import *
-from models.ButtonTrack import *
-from controllers.LoopController import *
+from models.Config import *
 
 #This class handles all the main controllers of the program
 class HomeController:
 
+    homeView = None
+
     #Called to generate the first window of the program
-    @staticmethod
-    def homeAction():
+    def homeAction(self):
+        self.config = Config()
         root = Tk()
-        view = HomeView(root)
-        for i in range(0, 12):
-            track = ButtonTrack(i)
-            view.addButtonTrack(track)
-
-        LoopController.setupLoops(view)
-
+        HomeController.homeView = HomeView(root, self)
         root.mainloop()
+
+    def loadSample(self, sample):
+        self.homeView.loadSample(sample)
+
+    def getConfig(self):
+        return self.config
+

@@ -14,8 +14,9 @@ def main():
                     rate=RATE,
                     input=True,
                     frames_per_buffer=CHUNK)
-    print stream.read(1024)
-    HomeController.homeAction()
+
+    controller = HomeController()
+    controller.homeAction()
 
 #Invoke the main function    
 main()
