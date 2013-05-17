@@ -1,6 +1,5 @@
 from Tkinter import *
 from models.Sample import *
-import controllers
 import tkFileDialog
 
 __author__ = 'Tim'
@@ -22,6 +21,7 @@ class SampleButton:
         self.container.pack()
         self.sample = None
         self.refresh()
+        controller.registerUISample(self)
 
     def grid(self, x, y):
         self.container.grid(row=x, column=y)
@@ -51,3 +51,6 @@ class SampleButton:
 
     def sampleProperties(self):
         self.controller.loadSample(self.sample)
+
+    def getSample(self):
+        return self.sample

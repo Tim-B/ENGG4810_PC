@@ -11,7 +11,7 @@ class SampleProperties:
         self.nameLabel.grid(row=0, column=0)
 
         self.effectValue = StringVar(self.container)
-        self.effectSelect = OptionMenu(self.container, self.effectValue, "None", "Delay", "Echo", "Pitch Shift", "Decimator", "Bitcrusher")
+        self.effectSelect = OptionMenu(self.container, self.effectValue, "None", "Delay", "Echo", "Pitch Shift", "Decimator", "Bitcrusher", command=self.setEffect)
         self.effectSelect.config(width=20)
         self.effectSelect.grid(row=1, column=0)
         self.effectValue.set("None")
@@ -24,9 +24,14 @@ class SampleProperties:
         self.modeSelect.grid(row=6, column=0)
 
         self.modeValue.set("Hold")
+        self.sample = None
 
         self.container.pack()
 
     def loadSample(self, sample):
         self.sample = sample
+
+    def setEffect(self, value):
+        if self.sample != None :
+            self.sample.setEffect(self.effectValue.get())
 

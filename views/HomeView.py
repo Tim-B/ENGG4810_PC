@@ -15,7 +15,7 @@ class HomeView:
 
         config = self.controller.getConfig()
 
-        w = Button(self.controlPanel, text="Upload to board")
+        w = Button(self.controlPanel, text="Upload to board", command=self.controller.upload)
         w.grid(column=4, row=0)
         self.effectValue = StringVar(self.controlPanel)
         w = OptionMenu(self.controlPanel, self.effectValue, *config.getEffectOptions())
