@@ -1,7 +1,7 @@
 from views.HomeView import *
 from models.Config import *
 import tkFileDialog
-from pyo import *
+from struct import *
 
 #This class handles all the main controllers of the program
 class HomeController:
@@ -19,6 +19,9 @@ class HomeController:
         self.samples = []
         self.sampleCnt = 0
         HomeController.homeView = HomeView(root, self)
+        self.effect1 = 'None'
+        self.effect2 = 'None'
+        self.tempo = 10
         root.mainloop()
 
     def loadSample(self, sample):
@@ -35,15 +38,74 @@ class HomeController:
 
     def upload(self):
         dirName = tkFileDialog.askdirectory(title="Please select the root directory of the MPC device")
-        print dirName
+        if not dirName:
+            print 'None selected'
+            return
         cnt = 0
         for sample in self.samples :
             sampleModel = sample.getSample()
-            if sampleModel != None :
+            if sampleModel is not None :
                 sampleModel.export(self, cnt, dirName)
             cnt += 1
+        self.generateConfig(dirName)
 
 
     def registerUISample(self, sample):
         self.samples.append(sample)
+
+    def generateConfig(self, path):
+        data = []
+        sActive = 0
+        val = 0
+        for sample in self.samples:
+            val = 0
+            sampleModel = sample.getSample()
+            if sampleModel is not None:
+                val = 1
+                if sampleModel.latch is True:
+                    val = val | 2
+            data.append(val)
+
+        data.append(int(self.tempo))
+        data.append(self.getEffectIndex(self.effect1))
+        data.append(self.getEffectIndex(self.effect2))
+
+        print data
+
+        filePath = path + '/mpc/mpc.conf'
+
+        f = open(filePath, 'w+')
+        f.write(pack('16B i 2B', *data))
+        f.close()
+
+    def setEffect(self, pos, value):
+        if pos == 0:
+            self.effect1 = value
+
+        if pos == 1:
+            self.effect2 = value
+
+    def getEffectIndex(self, value):
+        cnt = 0
+        for effect in self.config.getEffectOptions():
+            if effect == value:
+                return cnt
+            cnt += 1
+        return 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

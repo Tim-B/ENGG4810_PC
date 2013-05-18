@@ -35,6 +35,10 @@ class SampleButton:
         fileOptions = {}
         fileOptions['filetypes'] = [('all files', '.*'), ('wave files', '.wav')]
         fname = tkFileDialog.askopenfilename()
+        print fname
+        if not fname:
+            print 'None selected'
+            return
         sample = Sample(fname)
         self.setSample(sample)
 

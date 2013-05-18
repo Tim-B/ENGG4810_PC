@@ -13,6 +13,7 @@ class SampleWave:
         self.controller = controller
         self.container = Frame(self.parent, width = 800, height = 300)
         self.sample = None
+        self.displayed = False
 
         self.figure = Figure(figsize=(5,1), dpi=120)
         #self.figure.tight_layout()
@@ -27,9 +28,12 @@ class SampleWave:
 
         self.canvas.get_tk_widget().pack()
 
-        self.container.pack()
+        #self.container.pack()
 
     def loadSample(self, sample):
+        if not self.displayed:
+            self.container.pack()
+            self.displayed = True
         self.sample = sample
         self.figure.clf()
         #self.figure.tight_layout()

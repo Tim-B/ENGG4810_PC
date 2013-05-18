@@ -16,21 +16,32 @@ class HomeView:
         config = self.controller.getConfig()
 
         w = Button(self.controlPanel, text="Upload to board", command=self.controller.upload)
-        w.grid(column=4, row=0)
-        self.effectValue = StringVar(self.controlPanel)
-        w = OptionMenu(self.controlPanel, self.effectValue, *config.getEffectOptions())
+        w.grid(column=4, row=1)
+        self.effect1Value = StringVar(self.controlPanel)
+        self.effect1Value.set("None")
+        self.effect1Value.trace('w', self.effectChanged)
+        w = OptionMenu(self.controlPanel, self.effect1Value, *config.getEffectOptions())
         w.config(width=20)
-        w.grid(column=1, row=0)
+        w.grid(column=0, row=1)
 
         w = Label(self.controlPanel, text="Effect one:")
         w.grid(column=0, row=0)
 
-        w = OptionMenu(self.controlPanel, self.effectValue, *config.getEffectOptions())
+        self.effect2Value = StringVar(self.controlPanel)
+        self.effect2Value.set("None")
+        self.effect2Value.trace('w', self.effectChanged)
+        w = OptionMenu(self.controlPanel, self.effect2Value, *config.getEffectOptions())
         w.config(width=20)
         w.grid(column=1, row=1)
 
+        w = Label(self.controlPanel, text="Tempo:")
+        w.grid(column=3, row=0)
+
+        self.tempo = Spinbox(self.controlPanel, from_=10, to=240, command = self.setTempo)
+        self.tempo.grid(column=3, row=1)
+
         w = Label(self.controlPanel, text="Effect two:")
-        w.grid(column=0, row=1)
+        w.grid(column=1, row=0)
 
         self.buttonTrackPanel = Frame(self.window)
         self.buttonTrackPanel.grid(row=1, column=0)
@@ -58,6 +69,14 @@ class HomeView:
 
     def getController(self):
         return self.controller
+
+    def effectChanged(self, one, two, three):
+        self.controller.setEffect(0, self.effect1Value.get())
+        self.controller.setEffect(1, self.effect2Value.get())
+
+    def setTempo(self):
+        self.controller.tempo = self.tempo.get()
+        print self.controller.tempo
 
 
 
