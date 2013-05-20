@@ -15,6 +15,9 @@ class Sample:
         self.effect = 'None'
         self.latch = False
         self.effectStrength = float(0)
+        self.plotPoints = 0
+        self.startCut = 0.0
+        self.endCut = 1.0
         print(path)
 
     def getName(self):
@@ -25,65 +28,76 @@ class Sample:
         data = self.table.getEnvelope(size)[0]
         if size > (44100 * 10) :
             dS = []
+            self.plotPoints = 0
             for i in xrange(0,size,500):
                 dS.append(data[i])
+                self.plotPoints += 1
             return dS
+        self.plotPoints = size
         return data
 
     def export(self, controller, sampleIndex, path):
         dir = path + '/mpc/'
         samplePath = dir + str(sampleIndex) + '.wav'
-        data = self.applyEffect()
+
+        dur = self.length * (self.endCut - self.startCut)
+        start = self.length * self.startCut
+        smp = copy.copy(self.player)
+        smp.setOffset(start)
+        data = self.applyEffect(smp)
         if not os.path.isdir(dir) :
              os.makedirs(dir)
 
         if os.path.isfile(samplePath):
             os.remove(samplePath)
 
-        controller.pyo.recordOptions(dur=self.length, filename=samplePath, fileformat=0, sampletype=3)
+        controller.pyo.recordOptions(dur=dur, filename=samplePath, fileformat=0, sampletype=3)
+        print controller.pyo.getSamplingRate()
+        print controller.pyo.getNchnls()
         data.out()
         controller.pyo.start()
         self.length = self.table.getDur()
 
-    def applyEffect(self):
+    def applyEffect(self, smp):
         print self.effect
         if self.effect == 'Delay':
             print 'Applying delay'
-            return self.applyDelay()
+            return self.applyDelay(smp)
 
         if self.effect == 'Decimator':
             print 'Applying decimator'
-            return self.applyDecimate()
+            return self.applyDecimate(smp)
 
         if self.effect == 'Bitcrusher':
             print 'Apply bitcrush'
-            return self.applyBitcrush()
+            return self.applyBitcrush(smp)
 
         if self.effect == 'Pitch Shift':
             print 'Pitch shift'
-            return self.applyPitch()
+            return self.applyPitch(smp)
 
-        return self.player
+        return smp
 
-    def applyDecimate(self):
-        return Degrade(self.player, srscale=self.effectStrength)
+    def applyDecimate(self, data):
+        return Degrade(data, srscale=self.effectStrength)
 
-    def applyBitcrush(self):
+    def applyBitcrush(self, data):
         depth = self.effectStrength * 16;
         depth = int(depth)
-        return Degrade(self.player, bitdepth=depth)
+        return Degrade(data, bitdepth=depth)
 
-    def applyDelay(self):
+    def applyDelay(self, data):
         delay = float(1) * self.effectStrength
         print delay
         print self.effectStrength
-        return Delay(self.player, delay=[delay, 0], feedback=0.5)
+        return Delay(data, delay=[delay, 0], feedback=0.5)
 
-    def applyPitch(self):
-        data = copy.copy(self.player)
+    def applyPitch(self, data):
         speed = 2 * self.effectStrength
         self.length = self.length * (1 / speed)
         data.setSpeed(speed)
+        start = self.length * self.startCut
+        data.setOffset(start)
         return data
 
     def setEffect(self, effect):

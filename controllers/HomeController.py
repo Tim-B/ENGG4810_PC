@@ -11,7 +11,7 @@ class HomeController:
     #Called to generate the first window of the program
     def homeAction(self):
 
-        self.pyo = Server(audio="offline").boot()
+        self.pyo = Server(audio="offline", nchnls=1, sr=44100).boot()
         self.pyo.recordOptions(dur=5, filename=None, fileformat=0, sampletype=3)
 
         self.config = Config()
@@ -72,10 +72,10 @@ class HomeController:
 
         print data
 
-        filePath = path + '/mpc/mpc.conf'
+        filePath = path + '/mpc/mpc.txt'
 
         f = open(filePath, 'w+')
-        f.write(pack('16B i 2B', *data))
+        f.write(pack('19B', *data))
         f.close()
 
     def setEffect(self, pos, value):
