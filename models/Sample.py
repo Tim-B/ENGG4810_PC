@@ -18,6 +18,10 @@ class Sample:
         self.plotPoints = 0
         self.startCut = 0.0
         self.endCut = 1.0
+        self.attack = 0.1
+        self.decay = 0.2
+        self.release = 0.8
+        self.sustain = 0.5
         print(path)
 
     def getName(self):
@@ -51,9 +55,18 @@ class Sample:
         if os.path.isfile(samplePath):
             os.remove(samplePath)
 
+        attack = self.attack * dur
+        decay = self.decay * dur
+        release = self.release * dur
+        print attack
+        print decay
+        print release
+        adsr = Adsr(attack=attack, decay=decay, release=release, dur=dur, sustain=self.sustain)
+        data.setMul(adsr)
         controller.pyo.recordOptions(dur=dur, filename=samplePath, fileformat=0, sampletype=3)
         print controller.pyo.getSamplingRate()
         print controller.pyo.getNchnls()
+        adsr.play()
         data.out()
         controller.pyo.start()
         self.length = self.table.getDur()
