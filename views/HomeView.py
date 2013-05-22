@@ -16,7 +16,12 @@ class HomeView:
         config = self.controller.getConfig()
 
         w = Button(self.controlPanel, text="Upload to board", command=self.controller.upload)
-        w.grid(column=4, row=1)
+        w.grid(column=5, row=1)
+
+        self.lfoValue = IntVar()
+        self.lfoButton = Checkbutton(self.controlPanel, text="LFO", command=self.lfoSet, variable=self.lfoValue)
+        self.lfoButton.grid(column=4, row=1)
+
         self.effect1Value = StringVar(self.controlPanel)
         self.effect1Value.set("None")
         self.effect1Value.trace('w', self.effectChanged)
@@ -37,7 +42,7 @@ class HomeView:
         w = Label(self.controlPanel, text="Tempo:")
         w.grid(column=3, row=0)
 
-        self.tempo = Spinbox(self.controlPanel, from_=10, to=240, command = self.setTempo)
+        self.tempo = Spinbox(self.controlPanel, from_=10, to=240, command=self.setTempo)
         self.tempo.grid(column=3, row=1)
 
         w = Label(self.controlPanel, text="Effect two:")
@@ -77,6 +82,9 @@ class HomeView:
     def setTempo(self):
         self.controller.tempo = self.tempo.get()
         print self.controller.tempo
+
+    def lfoSet(self):
+        self.controller.getConfig().lfo = self.lfoValue.get()
 
 
 

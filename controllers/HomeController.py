@@ -66,16 +66,22 @@ class HomeController:
                     val = val | 2
             data.append(val)
 
+
+        other = 0
+        if self.config.lfo:
+            other = other | 1
+
         data.append(int(self.tempo))
         data.append(self.getEffectIndex(self.effect1))
         data.append(self.getEffectIndex(self.effect2))
+        data.append(other)
 
         print data
 
         filePath = path + '/mpc/mpc.txt'
 
         f = open(filePath, 'w+')
-        f.write(pack('19B', *data))
+        f.write(pack('20B', *data))
         f.close()
 
     def setEffect(self, pos, value):
