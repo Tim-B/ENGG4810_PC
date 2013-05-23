@@ -1,6 +1,9 @@
 from pyo import *
 import ntpath
 import copy
+import subprocess
+import tempfile
+from sys import platform as _platform
 
 __author__ = 'Tim'
 
@@ -9,7 +12,16 @@ class Sample:
     def __init__(self, path):
         self.path = path
         self.name = ntpath.basename(path)
-        self.player = SfPlayer(path)
+        if self.path.lower().endswith('mp3'):
+            tf = tempfile.NamedTemporaryFile(mode='r', delete=False)
+            ffmpegPath = 'third_party/ffmpeg/ffmpeg.exe'
+            if _platform == "darwin":
+                ffmpegPath = 'third_party/ffmpeg/ffmpeg'
+            mp3Path = tf.name
+            print mp3Path
+            output = subprocess.Popen([ffmpegPath, '-i', self.path, '-f', 'wav', mp3Path, '-y'], stdout=subprocess.PIPE).communicate()
+            self.path = mp3Path
+        self.player = SfPlayer(self.path)
         self.table = SndTable(self.path, chnl=0)
         self.length = self.table.getDur()
         self.effect = 'None'
