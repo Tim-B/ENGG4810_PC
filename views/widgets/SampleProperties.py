@@ -20,10 +20,15 @@ class SampleProperties:
         self.effectSelect.grid(row=1, column=0)
         self.effectValue.set("None")
 
-        w = Label(self.container, text="Effect Strength")
+        w = Label(self.container, text="Effect Value 1")
         w.grid(row=5, column=0)
         self.effectSlider = Scale(self.container, from_=0, to=100, orient=HORIZONTAL, command=self.setEffectStrength)
         self.effectSlider.grid(row=6, column=0)
+
+        w = Label(self.container, text="Effect Value 2")
+        w.grid(row=7, column=0)
+        self.effectSlider2 = Scale(self.container, from_=0, to=100, orient=HORIZONTAL, command=self.setEffectStrength)
+        self.effectSlider2.grid(row=8, column=0)
 
         w = Label(self.container, text="ADSR")
         w.grid(row=9, column=0)
@@ -57,8 +62,8 @@ class SampleProperties:
         self.relScale.set(self.sample.release * 100)
         self.susScale.set(self.sample.sustain * 100)
         self.drawADSR()
-        print self.sample.effectStrength
-        self.effectSlider.set(self.sample.effectStrength * 100)
+        self.effectSlider.set(self.sample.effectStrength1 * 100)
+        self.effectSlider2.set(self.sample.effectStrength2 * 100)
 
     def adsrSet(self, val):
 
@@ -94,7 +99,8 @@ class SampleProperties:
 
     def setEffectStrength(self, value):
         if self.sample != None :
-            self.sample.setEffectStrength(self.effectSlider.get())
+            self.sample.setEffectStrength(0, self.effectSlider.get())
+            self.sample.setEffectStrength(1, self.effectSlider2.get())
 
     def setMode(self, value):
         if self.sample is not None:

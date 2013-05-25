@@ -39,9 +39,7 @@ class HomeController:
 
     def upload(self):
         initDir = '/'
-        if not _platform == "darwin":
-            driveInfo = win32api.GetVolumeInformation("H:\\")
-            print driveInfo[0]
+
         dirName = tkFileDialog.askdirectory(title="Please select the root directory of the MPC device")
         if not dirName:
             print 'None selected'
