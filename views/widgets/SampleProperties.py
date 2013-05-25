@@ -25,13 +25,6 @@ class SampleProperties:
         self.effectSlider = Scale(self.container, from_=0, to=100, orient=HORIZONTAL, command=self.setEffectStrength)
         self.effectSlider.grid(row=6, column=0)
 
-        w = Label(self.container, text="Mode")
-        w.grid(row=7, column=0)
-        self.modeValue = StringVar(self.container)
-        self.modeSelect = OptionMenu(self.container, self.modeValue, "Hold", "Latch", command=self.setMode)
-        self.modeSelect.config(width=20)
-        self.modeSelect.grid(row=8, column=0)
-
         w = Label(self.container, text="ADSR")
         w.grid(row=9, column=0)
         self.atScale = Scale(self.container, from_=1, to=100, orient=HORIZONTAL, command=self.adsrSet, label="Attack", showvalue=0)
@@ -46,7 +39,6 @@ class SampleProperties:
         self.adsrCanvas = Canvas(self.container, width=250, height=100)
         self.adsrCanvas.grid(row=14, column=0)
 
-        self.modeValue.set("Hold")
         self.sample = None
 
         self.helpLabel = Label(self.outer, text="Load sample then click properties")
@@ -67,10 +59,6 @@ class SampleProperties:
         self.drawADSR()
         print self.sample.effectStrength
         self.effectSlider.set(self.sample.effectStrength * 100)
-        if(self.sample.latch):
-            self.modeValue.set("Latch")
-        else:
-            self.modeValue.set("Hold")
 
     def adsrSet(self, val):
 

@@ -2,6 +2,7 @@ from Tkinter import *
 from views.widgets.SampleGrid import *
 from views.widgets.SampleProperties import *
 from views.widgets.SampleWave import *
+from threading import Thread
 
 #This class generates the UI of home (the first) page of the program
 class HomeView:
@@ -15,12 +16,8 @@ class HomeView:
 
         config = self.controller.getConfig()
 
-        w = Button(self.controlPanel, text="Upload to board", command=self.controller.upload)
-        w.grid(column=5, row=1)
-
-        self.lfoValue = IntVar()
-        self.lfoButton = Checkbutton(self.controlPanel, text="LFO", command=self.lfoSet, variable=self.lfoValue)
-        self.lfoButton.grid(column=4, row=1)
+        self.uploadBtn = Button(self.controlPanel, text="Upload to board", command=self.upload)
+        self.uploadBtn.grid(column=5, row=1)
 
         self.effect1Value = StringVar(self.controlPanel)
         self.effect1Value.set("None")
@@ -66,7 +63,13 @@ class HomeView:
     def createMenu(self):
         self.menu = Menu(self.window)
         self.menu.add_command(label="Quit", command=self.window.quit)
+        self.menu.add_command(label="Load config", command=self.controller.loadConfig)
         self.window.config(menu=self.menu)
+
+    def upload(self):
+        self.uploadBtn.config(state=DISABLED);
+        Thread(target=self.controller.upload()).start()
+        self.uploadBtn.config(state=NORMAL);
 
     def loadSample(self, sample):
         self.sampleProperties.loadSample(sample)
@@ -82,9 +85,6 @@ class HomeView:
     def setTempo(self):
         self.controller.tempo = self.tempo.get()
         print self.controller.tempo
-
-    def lfoSet(self):
-        self.controller.getConfig().lfo = self.lfoValue.get()
 
 
 

@@ -15,9 +15,15 @@ class SampleButton:
         self.fileNameLabel = Label(self.container, textvariable = self.fileName)
         self.addButton = Button(self.container, text="Load sample", command=self.loadSample)
         self.propertiesButton = Button(self.container, text="Properties", command=self.sampleProperties, state=DISABLED)
+        self.active = IntVar()
+        active = Checkbutton(self.container, text="Sample active", variable=self.active)
+        self.latch = IntVar()
+        latch = Checkbutton(self.container, text="Latch", variable=self.latch)
         self.fileNameLabel.pack()
         self.propertiesButton.pack()
         self.addButton.pack()
+        active.pack()
+        latch.pack()
         self.container.pack()
         self.sample = None
         self.refresh()
@@ -28,6 +34,7 @@ class SampleButton:
 
     def setSample(self, sample):
         self.sample = sample
+        self.active.set(1)
         self.refresh()
 
 
@@ -58,3 +65,15 @@ class SampleButton:
 
     def getSample(self):
         return self.sample
+
+    def getActive(self):
+        return self.active.get()
+
+    def getLatch(self):
+        return self.latch.get()
+
+    def setLatch(self, value):
+        self.latch.set(value)
+
+    def setActive(self, value):
+        self.active.set(value)

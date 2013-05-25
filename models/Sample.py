@@ -25,7 +25,6 @@ class Sample:
         self.table = SndTable(self.path, chnl=0)
         self.length = self.table.getDur()
         self.effect = 'None'
-        self.latch = False
         self.effectStrength = float(0)
         self.plotPoints = 0
         self.startCut = 0.0
@@ -134,9 +133,5 @@ class Sample:
         val = float(val)
         self.effectStrength = val / 100
         print self.effectStrength
-
-    def setLatch(self, value):
-        self.latch = value
-        print value
 
 

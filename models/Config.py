@@ -8,5 +8,5 @@ class Config:
         self.lfo = 0
 
     def getEffectOptions(self):
-        return ["None", "Lowpass", "Highpass", "Bandpass", "Notch", "Delay", "Delay/Echo", "Decimator/Bitcrusher", "Bitwise KO"]
+        return ["None", "Lowpass", "Highpass", "Bandpass", "Notch", "Delay", "Echo", "Decimator/Bitcrusher", "Bitwise KO"]
 
