@@ -89,6 +89,7 @@ class Sample:
         controller.pyo.start()
         self.length = self.table.getDur()
         self.player.setMul(1)
+        self.player.stop()
 
     def applyEffect(self, smp):
         print self.effect
