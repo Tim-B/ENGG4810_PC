@@ -2,6 +2,7 @@ from Tkinter import *
 from views.widgets.SampleGrid import *
 from views.widgets.SampleProperties import *
 from views.widgets.SampleWave import *
+from views.widgets.WavePanel import *
 from threading import Thread
 
 #This class generates the UI of home (the first) page of the program
@@ -12,7 +13,8 @@ class HomeView:
         self.controller = controller
 
         self.controlPanel = Frame(self.window)
-        self.controlPanel.grid(row=0, column=0, columnspan=2)
+        self.controlPanel.grid(row=0, column=0, columnspan=2, pady=10)
+        self.waveShown = False
 
         config = self.controller.getConfig()
 
@@ -49,13 +51,18 @@ class HomeView:
         self.buttonTrackPanel.grid(row=1, column=0)
         self.sampleGrid = SampleGrid(controller, self.buttonTrackPanel)
 
-        self.workspacePanel = Frame(self.window)
-        self.workspacePanel.grid(row=1, column=1)
+        self.workspacePanel = Frame(self.window, bd=1, relief=GROOVE)
+        self.workspacePanel.grid(row=1, column=1, sticky=W+E+N+S)
         self.sampleProperties = SampleProperties(controller, self.workspacePanel)
 
-        self.timeLinePanel = Frame(self.window)
-        self.timeLinePanel.grid(row=2, column=0, columnspan=2)
+        self.timeLinePanel = Frame(self.window, bd=1, relief=GROOVE)
+        self.timeLinePanel.grid(row=2, column=0, columnspan=2, sticky=W+E)
         self.sampleWave = SampleWave(controller, self.timeLinePanel)
+
+        self.waveViewPanel = Frame(self.window, width=400, bd=1, relief=GROOVE)
+
+        for i in range(0, 5):
+            w = WavePanel(self.controller, self.waveViewPanel)
 
         self.createMenu()
 
@@ -64,7 +71,17 @@ class HomeView:
         self.menu = Menu(self.window)
         self.menu.add_command(label="Quit", command=self.window.quit)
         self.menu.add_command(label="Load config", command=self.controller.loadConfig)
+        self.menu.add_command(label="Toggle wave panel", command=self.showWavePanel)
         self.window.config(menu=self.menu)
+
+    def showWavePanel(self):
+        if self.waveShown:
+            self.waveViewPanel.grid_forget()
+            self.waveShown = False
+        else:
+            self.waveViewPanel.grid(row=0, column=3, rowspan=3)
+            self.waveShown = True
+
 
     def upload(self):
         self.uploadBtn.config(state=DISABLED);

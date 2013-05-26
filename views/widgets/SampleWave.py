@@ -71,7 +71,7 @@ class SampleWave:
 
     def loadSample(self, sample):
         if not self.displayed:
-            self.container.pack()
+            self.container.pack(padx=15, ipady=15)
             self.displayed = True
         self.sample = sample
         self.figure.clf()

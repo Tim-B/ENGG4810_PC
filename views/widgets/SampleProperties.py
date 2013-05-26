@@ -8,16 +8,20 @@ class SampleProperties:
         self.controller = controller
         self.displayed = False
 
-        self.outer = Frame(self.parent, width=250, height=200)
+        self.outer = Frame(self.parent, width=250)
 
         self.container = Frame(self.outer)
+
+        w = Label(self.container, text="Sample Properties",font=("Helvetica", 16))
+        w.grid(row=0, column=0)
+
         self.nameLabel = Label(self.container, text="Effect")
-        self.nameLabel.grid(row=0, column=0)
+        self.nameLabel.grid(row=1, column=0)
 
         self.effectValue = StringVar(self.container)
         self.effectSelect = OptionMenu(self.container, self.effectValue, "None", "Delay", "Echo", "Pitch Shift", "Decimator", "Bitcrusher", command=self.setEffect)
         self.effectSelect.config(width=20)
-        self.effectSelect.grid(row=1, column=0)
+        self.effectSelect.grid(row=2, column=0)
         self.effectValue.set("None")
 
         w = Label(self.container, text="Effect Value 1")
@@ -53,7 +57,7 @@ class SampleProperties:
     def loadSample(self, sample):
         if not self.displayed:
             self.helpLabel.pack_forget()
-            self.container.pack()
+            self.container.pack(padx=15, ipady=15)
             self.displayed = True
         self.sample = sample
         self.effectValue.set(self.sample.effect)
