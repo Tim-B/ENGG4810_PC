@@ -88,8 +88,11 @@ class Sample:
         data.out()
         controller.pyo.start()
         self.length = self.table.getDur()
-        self.player.setMul(1)
-        self.player.stop()
+        if self.effect == 'Delay' or self.effect == 'Echo':
+            self.player.setMul(1)
+            self.player.stop()
+
+
 
     def applyEffect(self, smp):
         print self.effect
@@ -120,7 +123,7 @@ class Sample:
         return Degrade(data, srscale=self.effectStrength1)
 
     def applyBitcrush(self, data):
-        depth = self.effectStrength * 16;
+        depth = self.effectStrength1 * 16;
         depth = int(depth)
         return Degrade(data, bitdepth=depth)
 
@@ -135,7 +138,7 @@ class Sample:
         return SDelay(data, delay=[delay],mul=feedback, maxdelay=self.length + delay)
 
     def applyPitch(self, data):
-        speed = 2 * self.effectStrength1
+        speed = 1.5 * self.effectStrength1 + 0.5
         self.length = self.length * (1 / speed)
         data.setSpeed(speed)
         start = self.length * self.startCut
